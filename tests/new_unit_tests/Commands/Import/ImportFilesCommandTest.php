@@ -2,15 +2,15 @@
 
 namespace Pantheon\Terminus\UnitTests\Commands\Site;
 
-use Pantheon\Terminus\Commands\Site\ImportCommand;
+use Pantheon\Terminus\Commands\Import\ImportFilesCommand;
 use Terminus\Exceptions\TerminusException;
 use Pantheon\Terminus\UnitTests\Commands\CommandTestCase;
 use Terminus\Models\Workflow;
 
 /**
- * Test suite for class for Pantheon\Terminus\Commands\Site\ImportCommand
+ * Test suite for class for Pantheon\Terminus\Commands\Import\ImportDatabaseCommand
  */
-class ImportCommandTest extends CommandTestCase
+class ImportfilesCommandTest extends CommandTestCase
 {
 
     /**
@@ -21,7 +21,7 @@ class ImportCommandTest extends CommandTestCase
     protected function setup()
     {
         parent::setUp();
-        $this->command = new ImportCommand($this->getConfig());
+        $this->command = new ImportFilesCommand($this->getConfig());
         $this->command->setSites($this->sites);
         $this->command->setLogger($this->logger);
     }
@@ -32,7 +32,7 @@ class ImportCommandTest extends CommandTestCase
      * @return void
      *
      */
-    public function testSiteImportValidURL()
+    public function testSiteImportFilesValidURL()
     {
         $workflow = $this->getMockBuilder(Workflow::class)
             ->disableOriginalConstructor()
@@ -40,14 +40,14 @@ class ImportCommandTest extends CommandTestCase
 
         $workflow->expects($this->once())->method('wait')->willReturn(true);
 
-        $this->environment->expects($this->once())->method('import')
+        $this->environment->expects($this->once())->method('importFiles')
             ->with($this->equalTo('a-valid-url'))->willReturn($workflow);
         $this->logger->expects($this->once())
             ->method('log')->with(
                 $this->equalTo('notice'),
-                $this->equalTo('Imported site onto Pantheon')
+                $this->equalTo('Importing files to "dev"')
             );
 
-        $this->command->import('dummy-site', 'a-valid-url');
+        $this->command->importFiles('dummy-site', 'a-valid-url');
     }
 }
