@@ -22,4 +22,4 @@ Feature: Running Drush Commands on a Drupal Site
   @vcr remote-wp.yml
   Scenario: Running a drush command on a Wordpress site is not possible
     When I run: terminus drush [[test_site_name]].dev -- status
-    Then I should see an error message: The drush command is only available on sites running drupal, drupal8. The framework for this site is wordpress.
+    Then I should see an error message: The drush command is only available on sites running Drupal. The framework for this site is WordPress.

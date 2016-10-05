@@ -26,6 +26,11 @@ abstract class SSHBaseCommand extends TerminusCommand implements SiteAwareInterf
     protected $unavailable_commands = [];
 
     protected $valid_frameworks = [];
+    protected $framework_labels = [
+        'drupal'    => 'Drupal',
+        'drupal8'   => 'Drupal',
+        'wordpress' => 'WordPress',
+    ];
 
     private $site;
     private $environment;
@@ -68,9 +73,9 @@ abstract class SSHBaseCommand extends TerminusCommand implements SiteAwareInterf
         $is_valid = true;
         foreach ($command as $element) {
             if (isset($this->unavailable_commands[$element])) {
-                $is_valid       = false;
-                $message        = "That command is not available via Terminus. ";
-                $message        .= "Please use the native {command} command.";
+                $is_valid = false;
+                $message  = "That command is not available via Terminus. ";
+                $message .= "Please use the native {command} command.";
                 $interpolations = ['command' => $this->command];
                 if (!empty($alternative = $this->unavailable_commands[$element])) {
                     $message .= " Hint: You may want to try `{suggestion}`.";
@@ -107,11 +112,11 @@ abstract class SSHBaseCommand extends TerminusCommand implements SiteAwareInterf
         if (!in_array($framework, $this->valid_frameworks)) {
             throw new TerminusException(
                 "The {command} command is only available on sites running {frameworks}. "
-                ."The framework for this site is {framework}.",
+                . "The framework for this site is {framework}.",
                 [
                     'command'    => $this->command,
-                    'frameworks' => implode(", ", $this->valid_frameworks),
-                    'framework'  => $framework,
+                    'frameworks' => $this->frameworksToString($this->valid_frameworks),
+                    'framework'  => $this->frameworksToString($framework),
                 ]
             );
         }
@@ -122,5 +127,21 @@ abstract class SSHBaseCommand extends TerminusCommand implements SiteAwareInterf
         array_unshift($command_args, $this->command);
 
         return implode(" ", $command_args);
+    }
+
+    private function frameworksToString($framework)
+    {
+        $labels = [];
+        if (!is_array($framework)) {
+            $framework = [$framework];
+        }
+        foreach ($framework as $fw) {
+            if (isset($this->framework_labels[$fw])) {
+                array_push($labels, $this->framework_labels[$fw]);
+            } else {
+                array_push($labels, $fw);
+            }
+        }
+        return implode(", ", array_unique($labels));
     }
 }

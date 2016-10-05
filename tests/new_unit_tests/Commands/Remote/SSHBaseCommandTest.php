@@ -96,6 +96,9 @@ class SSHBaseCommandTest extends CommandTestCase
         $this->protectedMethodCall($this->command, 'validateConnectionMode', ['git']);
     }
 
+    /**
+     * Valid frameworks should not throw a TerminusException
+     */
     public function testValidateFrameworkValid()
     {
         $this->protectedMethodCall($this->command, 'validateFramework', ['framework-a']);
@@ -103,7 +106,7 @@ class SSHBaseCommandTest extends CommandTestCase
 
     /**
      * @expectedException \Terminus\Exceptions\TerminusException
-     * @expectedExceptionMessage The dummy command is only available on sites running framework-a, framework-b.
+     * @expectedExceptionMessage The dummy command is only available on sites running A-Frame, B-Frame.
      */
     public function testValidateFrameworkInvalid()
     {

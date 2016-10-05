@@ -21,6 +21,11 @@ class DummyCommand extends SSHBaseCommand
         'framework-b',
     ];
 
+    protected $framework_labels = [
+        'framework-a' => 'A-Frame',
+        'framework-b' => 'B-Frame',
+    ];
+
     public function dummyCommand($site_env_id, array $dummy_args)
     {
         $this->prepareEnvironment($site_env_id);

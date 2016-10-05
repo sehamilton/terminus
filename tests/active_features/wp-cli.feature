@@ -21,4 +21,4 @@ Feature: Running WP-CLI Commands on a Drupal Site
   @vcr remote-drush.yml
   Scenario: Running a WP-CLI command on a Drupal site is not possible
     When I run: terminus wp [[test_site_name]].dev -- cli version
-    Then I should see an error message: The wp command is only available on sites running wordpress. The framework for this site is drupal8.
+    Then I should see an error message: The wp command is only available on sites running WordPress. The framework for this site is Drupal.
