@@ -30,6 +30,7 @@ abstract class SSHBaseCommand extends TerminusCommand implements SiteAwareInterf
         'drupal'    => 'Drupal',
         'drupal8'   => 'Drupal',
         'wordpress' => 'WordPress',
+        'wordpress_network' => 'WordPress Site Network',
     ];
 
     private $site;
